@@ -7,6 +7,7 @@ verify_ssl = true
 ipykernel = "*"
 jupyter = "*"
 python-language-server = {extras = ["all"],version = "*"}
+pytest = "*"
 
 [packages]
 sympy = "*"

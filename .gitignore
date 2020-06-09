@@ -1,4 +1,6 @@
 .idea
 .ipynb_checkpoints
-
+dist/
+build/
 .vscode
+control2020.egg-info
