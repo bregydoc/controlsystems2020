@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 ipykernel = "*"
 jupyter = "*"
-python-language-server = {extras = ["all"],version = "*"}
 pytest = "*"
 
 [packages]

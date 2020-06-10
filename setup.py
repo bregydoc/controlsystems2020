@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="control2020",
-    version="0.0.1",
+    version="0.0.2",
     author="Bregy Malpartida",
     author_email="bregy.malpartida@utec.edu.pe",
     description="A toolkit to design and lear about control systems",
