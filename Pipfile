@@ -15,6 +15,7 @@ control = "*"
 matplotlib = "*"
 numpy = "*"
 scipy = "*"
+control2020 = "*"
 
 [requires]
 python_version = "3.8"
