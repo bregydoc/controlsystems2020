@@ -25,11 +25,11 @@
         },
         "control2020": {
             "hashes": [
-                "sha256:6a26d31618382cbdd7eee93ebcfba32e5c2e703922d5b4bfee0ec69cb9587333",
-                "sha256:f488cf1750dc6aa928d43d3b83caa0c4233ff09a3c6ede46ef3b33ee5c6037b2"
+                "sha256:08acd983eb267f276f9888db7a3276dc60f77b9b57e87cb831977802b2601839",
+                "sha256:eb06c76b140e30d45fd44c68c6ac522c66f04d4f3fe802df10c0a7b70de8078e"
             ],
             "index": "pypi",
-            "version": "==0.0.2"
+            "version": "==0.0.3"
         },
         "cycler": {
             "hashes": [
@@ -175,7 +175,7 @@
                 "sha256:5b26757dc6f79a3b7dc9fab95359328d5747fcb2409d331ea66d0272b90ab2a0",
                 "sha256:8b995ffe925347a2138d7ac0fe77155e4311a0ea6d6da4f5128fe4b3cbe5ed71"
             ],
-            "markers": "platform_system == 'Darwin'",
+            "markers": "sys_platform == 'darwin'",
             "version": "==0.1.0"
         },
         "attrs": {

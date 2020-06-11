@@ -67,8 +67,9 @@ def lead_compensator_with_root_placing(g: Union[sp.Expr, ct.TransferFunction], p
     fixed_zero = compensator_zero
     if auto_tune:  # simple algorithm to search the best near zero
         if report:
+            print("---")
             print("auto tuning zero compensator in range (%.2f, %.2f) with %d steps" %
-                  (compensator_zero + tune_range[0], compensator_zero + tune_range[0], tune_values))
+                  (compensator_zero + tune_range[0], compensator_zero + tune_range[1], tune_values))
             print("expected - ts: %.2f | po: %.2f" % (ts, po))
         errors: [float] = []
         zero_tests = np.linspace(compensator_zero + tune_range[0], compensator_zero + tune_range[1], tune_values)
@@ -88,13 +89,15 @@ def lead_compensator_with_root_placing(g: Union[sp.Expr, ct.TransferFunction], p
                 g_ts = step_report["SettlingTime"]
                 g_po = step_report["Overshoot"]
                 if report:
-                    print("step %d - zero: %.2f  ts: %.2f | po: %.2f" % (i, z, g_ts, g_po))
+                    print("step %d) zero: %.6f |  ts: %.2f | po: %.2f" % (i, z, g_ts, g_po))
                 err = .4 * (po - g_po) ** 2 + .6 * (ts - g_ts) ** 2  # compute quadratic error
                 errors.append(err)
             except:
                 errors.append(np.inf)
                 continue
         fixed_zero = zero_tests[np.argmin(errors)]
+        if report:
+            print("---")
 
     compensator_zero_angle = np.angle(pd - fixed_zero) * 180 / np.pi
 

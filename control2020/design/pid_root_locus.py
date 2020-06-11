@@ -5,7 +5,8 @@ from control2020 import core
 from typing import Union
 
 
-def pid_with_root_placing(g: Union[sp.Expr, ct.TransferFunction], po: float, ts: float, report: bool = False) -> ct.TransferFunction:
+def pid_with_root_placing(g: Union[sp.Expr, ct.TransferFunction],
+                          po: float, ts: float, report: bool = False) -> ct.TransferFunction:
     """
     Function to create a PID controller based on root locus method,
     the controller is the form: Kc*(s+b)^2/s equivalent to Kp + Ki/s + Kd*s
