@@ -25,11 +25,11 @@
         },
         "control2020": {
             "hashes": [
-                "sha256:08acd983eb267f276f9888db7a3276dc60f77b9b57e87cb831977802b2601839",
-                "sha256:eb06c76b140e30d45fd44c68c6ac522c66f04d4f3fe802df10c0a7b70de8078e"
+                "sha256:2b04bb1dbc0a842097f08eaa084f2728bc79c357c7b1254b3d69d6423c695886",
+                "sha256:c0ba8e835335aff4632ce3b3213e538dba98d58811eba6dd829a31b35639272c"
             ],
             "index": "pypi",
-            "version": "==0.0.3"
+            "version": "==0.0.4"
         },
         "cycler": {
             "hashes": [

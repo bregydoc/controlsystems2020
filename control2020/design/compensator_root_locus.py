@@ -102,7 +102,7 @@ def lead_compensator_with_root_placing(g: Union[sp.Expr, ct.TransferFunction], p
     compensator_zero_angle = np.angle(pd - fixed_zero) * 180 / np.pi
 
     if report:
-        print("fixed zero= %.2f | angle= %.2fdeg" % (fixed_zero, compensator_zero_angle))
+        print("fixed zero= %.6f | angle= %.2fdeg" % (fixed_zero, compensator_zero_angle))
 
     # angle condition
     pole_angle = compensator_zero_angle - compensator_angle  # calculated value for your compensator
