@@ -1,9 +1,6 @@
-import numpy as np
 import sympy as sp
 import control as ct
-import math
-from matplotlib import pyplot as plt
-from typing import Tuple, Union, List, Dict
+from typing import Union
 
 
 def symbolic_transfer_function(eq: Union[sp.Expr, int, float]) -> ct.TransferFunction:
@@ -13,10 +10,11 @@ def symbolic_transfer_function(eq: Union[sp.Expr, int, float]) -> ct.TransferFun
     :return: a control Transfer Function class
     """
     s = sp.var('s')
-    used_symbols = [str(sym) for sym in eq.free_symbols]
-    if not len(used_symbols) == 1 or "s" not in used_symbols:
-        if not isinstance(eq, float) and not isinstance(eq, int):
+    if not isinstance(eq, float) and not isinstance(eq, int):
+        used_symbols = [str(sym) for sym in eq.free_symbols]
+        if not len(used_symbols) == 1 or "s" not in used_symbols:
             raise Exception("invalid equation, please use correct transfer function equation (e.g. 1/(s**2+3))")
+
     n, d = sp.fraction(sp.factor(eq))
 
     num = sp.Poly(sp.expand(n), s).all_coeffs()
