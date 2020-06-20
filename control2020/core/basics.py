@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from typing import Tuple, Union, List, Dict
 
 
-def symbolic_transfer_function(eq: sp.Expr) -> ct.TransferFunction:
+def symbolic_transfer_function(eq: Union[sp.Expr, int, float]) -> ct.TransferFunction:
     """
     Transform a symbolic equation to a transfer function (sympy -> control)
     :param eq: your symbolic sympy based equation
@@ -15,7 +15,8 @@ def symbolic_transfer_function(eq: sp.Expr) -> ct.TransferFunction:
     s = sp.var('s')
     used_symbols = [str(sym) for sym in eq.free_symbols]
     if not len(used_symbols) == 1 or "s" not in used_symbols:
-        raise Exception("invalid equation, please use correct transfer function equation (e.g. 1/(s**2+3))")
+        if not isinstance(eq, float) and not isinstance(eq, int):
+            raise Exception("invalid equation, please use correct transfer function equation (e.g. 1/(s**2+3))")
     n, d = sp.fraction(sp.factor(eq))
 
     num = sp.Poly(sp.expand(n), s).all_coeffs()
