@@ -53,4 +53,14 @@ class System:
         gm, pm, wg, wp = ct.margin(self.open_system(), omega)
         return gm, pm, wg, wp
 
-    def update(self, g=None, k=None, h=None, in_noise=None, out_noise=None):
+    def update(self, g: TF = None, k: TF = None, h: TF = None, in_noise: TF = None, out_noise: TF = None):
+        if g is not None:
+            self.G = normalized_tf(g)
+        if k is not None:
+            self.K = normalized_tf(k)
+        if h is not None:
+            self.H = normalized_tf(h)
+        if in_noise is not None:
+            self.in_noise = normalized_tf(in_noise)
+        if out_noise is not None:
+            self.out_noise = normalized_tf(out_noise)

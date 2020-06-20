@@ -5,11 +5,10 @@ import control as ct
 import control2020 as ct20
 import sympy as sp
 from dash.dependencies import Input, Output
-
+from labo import BasicExperiment, BasicSystem
 
 P = ct.TransferFunction([1], [1, 1, 1])
-K = ct.TransferFunction([1], [1])
-H = ct.TransferFunction([1], [1])
+exp = BasicExperiment(BasicSystem(P))
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 # external_scripts = ['https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML']
