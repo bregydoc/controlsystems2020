@@ -15,7 +15,7 @@ index_template = '''
             {%renderer%}
         </footer>
     </body>
-    <script>feather.replace()</script>
+    <script>alert("time")</script>
 </html>
 
 '''
