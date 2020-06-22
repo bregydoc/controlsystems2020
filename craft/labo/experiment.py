@@ -31,9 +31,9 @@ class BasicExperiment:
             ],
             "layout": {
                 "xaxis": {"type": "log", "title": "Frequency"},
-                "yaxis": {"domain": [0, 0.5]},
-                "yaxis2": {"domain": [0.5, 1]},
-                "grid": {"rows": 2, "columns": 1, "pattern": 'independent'},
+                # "yaxis": {"domain": [0, 0.5]},
+                # "yaxis2": {"domain": [0.5, 1]},
+                # "grid": {"rows": 2, "columns": 1, "pattern": 'independent'},
                 "title": "Bode Plot"
             }
         }

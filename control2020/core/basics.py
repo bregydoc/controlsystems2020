@@ -10,10 +10,14 @@ def symbolic_transfer_function(eq: Union[sp.Expr, int, float]) -> ct.TransferFun
     :return: a control Transfer Function class
     """
     s = sp.var('s')
-    if not isinstance(eq, float) and not isinstance(eq, int):
-        used_symbols = [str(sym) for sym in eq.free_symbols]
-        if not len(used_symbols) == 1 or "s" not in used_symbols:
-            raise Exception("invalid equation, please use correct transfer function equation (e.g. 1/(s**2+3))")
+    try:
+        if eq.is_real:
+            pass
+    except:
+        if not isinstance(eq, float) and not isinstance(eq, int):
+            used_symbols = [str(sym) for sym in eq.free_symbols]
+            if not len(used_symbols) == 1 or "s" not in used_symbols:
+                raise Exception("invalid equation, please use correct transfer function equation (e.g. 1/(s**2+3))")
 
     n, d = sp.fraction(sp.factor(eq))
 

@@ -4,7 +4,7 @@ import dash_html_components as html
 import control as ct
 import control2020 as ct20
 import sympy as sp
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 
 from labo import BasicExperiment, BasicSystem
 from layout import layout
@@ -34,8 +34,13 @@ app.layout = layout
 
 # app.renderer = renderer
 
-@app.callback(Output("time-plot", "figure"), [Input("compute-btn", "n_clicks")])
-def callback(clicks):
+@app.callback(Output("time-plot", "figure"),
+              [Input("compute-btn", "n_clicks")],
+              [State("plant_raw", "value"),
+               State("controller_raw", "value"),
+               State("feedback_raw", "value")])
+def callback(clicks, plant_raw, controller_raw, feedback_raw):
+    exp.system.update(g=plant_raw, k=controller_raw, h=feedback_raw)
     fig = exp.render_step()
     return fig
 
