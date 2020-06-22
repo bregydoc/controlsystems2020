@@ -28,9 +28,23 @@ app = dash.Dash(
     external_scripts=external_scripts,
 )
 
-app.index_template = index_template
+app.index_string = index_template
 app.layout = layout
-app.renderer = renderer
+
+
+# app.renderer = renderer
+
+@app.callback(Output("time-plot", "figure"), [Input("compute-btn", "n_clicks")])
+def callback(clicks):
+    fig = exp.render_step()
+    return fig
+
+
+@app.callback(Output("freq-plot", "figure"), [Input("compute-btn", "n_clicks")])
+def callback(clicks):
+    fig = exp.render_bode()
+    return fig
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

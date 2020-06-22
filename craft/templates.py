@@ -14,8 +14,18 @@ index_template = '''
             {%scripts%}
             {%renderer%}
         </footer>
+        <script type="application/javascript">
+            let ep = document.getElementById("_dash-app-content");
+            function watcher() {
+                if (ep.firstElementChild.childElementCount > 0) {
+                    feather.replace();
+                } else {
+                    setTimeout(watcher, 10);
+                }
+            }
+            watcher();
+        </script>
     </body>
-    <script>alert("time")</script>
 </html>
 
 '''

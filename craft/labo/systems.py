@@ -30,7 +30,7 @@ class System:
     def full_system(self) -> ct.TransferFunction:
         return ct.feedback(self.open_system(), self.H)
 
-    def step(self, time: list = None) -> Tuple[np.float, np.float]:
+    def step(self, time: list = None) -> Tuple[list, list]:
         t, y = ct.step_response(self.full_system(), time)
         return t, y
 
@@ -45,9 +45,9 @@ class System:
         mag, phase, omega = ct.bode(self.open_system(), omega=omega, dB=True, deg=True, Plot=False)
         return mag, phase, omega
 
-    def bode_close(self, omega: list = None) -> Tuple[np.float, np.float, np.float]:
-        mag, phase, omega = ct.bode(self.full_system(), omega=omega, dB=True, deg=True, Plot=False)
-        return mag, phase, omega
+    def bode_close(self, omega: list = None) -> Tuple[list, list, list]:
+        mag, phase, omega_returned = ct.bode(self.full_system(), omega=omega, dB=True, deg=True, Plot=False)
+        return mag, phase, omega_returned
 
     def margins_open(self, omega: list = None) -> Tuple[float, float, float, float]:
         gm, pm, wg, wp = ct.margin(self.open_system(), omega)
