@@ -67,8 +67,9 @@ def construct_variable_definer(kind: str, name: str, values: list = None):
 
 layout = html.Div(className="flex container justify-between mx-6 my-4 max-h-screen", children=[
     html.Div(children=[
-        html.H1(className="text-3xl", children="System Observer"),
-        html.H2(className="text-xl mt-3", children="System"),
+        html.H1(className="text-3xl font-bold", children="System Observer"),
+        html.Div(className="px-8 mt-5", children=html.Img(src="/assets/system.png", alt="system graph")),
+        html.H2(className="text-xl mt-3 font-bold", children="System"),
         html.Div(children=[
             html.Div(className=functions, children=[
                 html.Span(className="text-md", children="Plant"),
@@ -87,10 +88,8 @@ layout = html.Div(className="flex container justify-between mx-6 my-4 max-h-scre
                 dcc.Input(id="feedback_raw", className=input_class, value="1"),
             ])
         ]),
-        html.H2(className="text-xl mt-3 mb-3", children="Variables"),
-        html.Div(id="vars-container", className="w-auto", children=[
-            # construct_variable_definer("range", "a", values=[0, 10, 1])
-        ]),
+        html.H2(className="text-xl mt-8 mb-3 font-bold", children="Variable"),
+        html.Div(id="var-x-container", className="w-auto"),
         html.Div(className="w-full flex justify-center", children=[
             html.Button(id="add-new-var", className="px-4 py-1 mt-8 bg-indigo-300 rounded-md", children="Add Var")
         ])

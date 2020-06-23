@@ -49,6 +49,8 @@ class System:
 
     def bode_close(self, omega: list = None) -> Tuple[list, list, list]:
         mag, phase, omega_returned = ct.bode(self.full_system(), omega=omega, dB=True, Plot=False) # dB=True, deg=True,
+        phase = phase * 180. / np.pi
+        mag = 20. * np.log10(mag)
         return mag, phase, omega_returned
 
     def margins_open(self, omega: list = None) -> Tuple[float, float, float, float]:

@@ -3,5 +3,6 @@
 dist/
 build/
 .vscode
+.DS_Store
 control2020.egg-info
 __pycache__
