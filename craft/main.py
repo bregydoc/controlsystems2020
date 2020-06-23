@@ -7,7 +7,7 @@ import sympy as sp
 from dash.dependencies import Input, Output, State
 
 from labo import BasicExperiment, BasicSystem
-from layout import layout
+from layout import layout, construct_variable_definer
 from templates import renderer, index_template
 
 P = ct.TransferFunction([1], [1, 1, 1])
@@ -39,16 +39,29 @@ app.layout = layout
               [State("plant_raw", "value"),
                State("controller_raw", "value"),
                State("feedback_raw", "value")])
-def callback(clicks, plant_raw, controller_raw, feedback_raw):
+def render_time(clicks, plant_raw, controller_raw, feedback_raw):
     exp.system.update(g=plant_raw, k=controller_raw, h=feedback_raw)
     fig = exp.render_step()
     return fig
 
 
-@app.callback(Output("freq-plot", "figure"), [Input("compute-btn", "n_clicks")])
-def callback(clicks):
+@app.callback([Output("freq-mag-plot", "figure"),
+               Output("freq-phase-plot", "figure")],
+              [Input("compute-btn", "n_clicks")])
+def render_freq(clicks):
     fig = exp.render_bode()
     return fig
+
+
+@app.callback(Output("vars-container", "children"),
+              [Input("add-new-var", "n_clicks")],
+              [State("vars-container", "children")])
+def create_new_var(clicks, current_vars):
+    print(clicks)
+    print(len(current_vars))
+    new_var = construct_variable_definer("once", "x")
+    current_vars.append(new_var)
+    return current_vars
 
 
 if __name__ == '__main__':

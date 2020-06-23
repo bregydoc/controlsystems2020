@@ -3,6 +3,8 @@ import control2020 as ct20
 import sympy as sp
 from typing import Union, Tuple, Dict
 import numpy as np
+import copy
+
 
 TF = Union[ct.TransferFunction, sp.Expr, float, str]
 
@@ -46,7 +48,7 @@ class System:
         return mag, phase, omega
 
     def bode_close(self, omega: list = None) -> Tuple[list, list, list]:
-        mag, phase, omega_returned = ct.bode(self.full_system(), omega=omega, dB=True, deg=True, Plot=False)
+        mag, phase, omega_returned = ct.bode(self.full_system(), omega=omega, dB=True, Plot=False) # dB=True, deg=True,
         return mag, phase, omega_returned
 
     def margins_open(self, omega: list = None) -> Tuple[float, float, float, float]:
@@ -64,3 +66,6 @@ class System:
             self.in_noise = normalized_tf(in_noise)
         if out_noise is not None:
             self.out_noise = normalized_tf(out_noise)
+
+    def copy(self):
+        return copy.deepcopy(self)
