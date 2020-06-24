@@ -12,7 +12,7 @@ class Variable:
     kind: str  # possible: once, array, range
     start: float = 0
     end: float = 1
-    steps: float = 1
+    step: float = 1
     fixed: Union[float, list] = None
 
 
@@ -28,6 +28,15 @@ class BasicExperiment:
 
     def add_variable(self, var: Variable):
         self.variables.append(var)
+
+    def update_var(self, var_name: str, new_var: Variable):
+        updated_vars: List[Variable] = []
+        for var in self.variables:
+            if var.name == var_name:
+                updated_vars.append(new_var)
+            else:
+                updated_vars.append(var)
+        self.variables = updated_vars
 
     def new_system(self, var_name: str, var_value: str, g: str = None, k: str = None, h: str = None) -> BasicSystem:
         new_sys = self.system.copy()
@@ -54,7 +63,7 @@ class BasicExperiment:
                         new_sys = self.new_system(var.name, str(val), g, k, h)
                         systems.append((var.name, str(val), new_sys))
             elif var.kind == "range":
-                for val in np.arange(var.start, var.end, var.steps):
+                for val in np.arange(var.start, var.end, var.step):
                     new_sys = self.new_system(var.name, str(val), g, k, h)
                     systems.append((var.name, str(val), new_sys))
             else:
