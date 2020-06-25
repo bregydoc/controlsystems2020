@@ -50,14 +50,12 @@ class BasicExperiment:
         return new_sys
 
     def calculate_variations(self, g: str = None, k: str = None, h: str = None) -> List[Tuple[str, str, BasicSystem]]:
-        print(self.variables[0])
         systems: List[Tuple[str, str, BasicSystem]] = []
         for var in self.variables:
             if var.kind == "once":
                 new_sys = self.new_system(var.name, str(var.fixed), g, k, h)
                 systems.append((var.name, str(var.fixed), new_sys))
             elif var.kind == "array":
-                print("i'm array: ", var)
                 if type(var.fixed) == list:
                     for val in var.fixed:
                         new_sys = self.new_system(var.name, str(val), g, k, h)

@@ -17,6 +17,7 @@ scipy = "*"
 control2020 = "*"
 dash = "==1.12.0"
 plotly = "==4.8.1"
+dash-editor-components = "*"
 
 [requires]
 python_version = "3.8"

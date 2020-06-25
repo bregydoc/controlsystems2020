@@ -105,7 +105,6 @@ def state_to_variable(current_var: Dict) -> Variable:
     current_end = current_end or 1.0
     current_step = current_step or 1.0
 
-    print(current_once, current_array, current_start)
     name = [child["props"]["value"] for child in current_var["props"]["children"]
             if child["props"]["id"] == "var-name"]
 

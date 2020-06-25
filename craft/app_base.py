@@ -1,11 +1,29 @@
 import dash
+import sympy as sp
+import numpy as np
+import control2020 as ct20
 import control as ct
+import sys
+import contextlib
+from io import StringIO
+
 from dash.dependencies import Input, Output, State
 
-from .labo import BasicExperiment, BasicSystem, Variable
+
+from .labo import BasicExperiment, BasicSystem, Variable, normalized_tf
 from .layout import layout, construct_variable_definer
 from .utils import state_to_variable
 from .templates import index_template
+
+
+@contextlib.contextmanager
+def stdout_io(stdout=None):
+    old = sys.stdout
+    if stdout is None:
+        stdout = StringIO()
+    sys.stdout = stdout
+    yield stdout
+    sys.stdout = old
 
 
 exp = BasicExperiment(BasicSystem(ct.TransferFunction([1], [1, 1, 1])))
@@ -68,7 +86,6 @@ def update_variable_params(kind, name, current_var):
 
     if name != "":
         var = state_to_variable(current_var)
-        print("var: ", var)
         current_kind = var.kind
 
         current_once = var.fixed or 0.0
@@ -89,3 +106,30 @@ def update_variable_params(kind, name, current_var):
 
     return final_var
 
+
+@app.callback(Output("code-output-exec", "value"),
+              [Input("execute-btn", "n_clicks")],
+              [State("var-name", "value"),
+               State("plant_raw", "value"),
+               State("controller_raw", "value"),
+               State("feedback_raw", "value"),
+               State("code", "value")])
+def execute_code(clicks, var_name, g, k, h, code):
+    zero_sys = exp.new_system(var_name, "0.0", g, k, h)
+    with stdout_io() as s:
+        try:
+            exec(code, {
+                "np": np,
+                "sp": sp,
+                "ct": ct,
+                "ct20": ct20,
+                "G": zero_sys.G,
+                "K": zero_sys.K,
+                "H": zero_sys.H
+            })
+        except:
+            print("Something wrong with the code")
+    string_out = s.getvalue()
+    outs = string_out.split("\n")
+    out = "\n".join([out for out in outs if out != ""])
+    return out
