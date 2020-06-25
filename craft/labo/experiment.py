@@ -1,9 +1,7 @@
 from typing import Dict, Tuple, List, Union
 from .systems import System, TF
 import numpy as np
-import sympy as sp
 from dataclasses import dataclass
-import control as ct
 
 
 @dataclass
@@ -52,12 +50,14 @@ class BasicExperiment:
         return new_sys
 
     def calculate_variations(self, g: str = None, k: str = None, h: str = None) -> List[Tuple[str, str, BasicSystem]]:
+        print(self.variables[0])
         systems: List[Tuple[str, str, BasicSystem]] = []
         for var in self.variables:
             if var.kind == "once":
                 new_sys = self.new_system(var.name, str(var.fixed), g, k, h)
                 systems.append((var.name, str(var.fixed), new_sys))
             elif var.kind == "array":
+                print("i'm array: ", var)
                 if type(var.fixed) == list:
                     for val in var.fixed:
                         new_sys = self.new_system(var.name, str(val), g, k, h)
@@ -79,7 +79,8 @@ class BasicExperiment:
         for i, variation in enumerate(variations):
             t, y = variation[2].step()
             # report = variation[2].step_report()
-            data.append({"x": t, "y": y, "type": "line", "name": f"when {variation[0]}={variation[1]}"})
+            var_val = "%.2f" % (float(variation[1]))
+            data.append({"x": t, "y": y, "type": "line", "name": f"when {variation[0]}={var_val}"})
             # "text": f"RiseTime: {report['RiseTime']}\n" +
             # f"SettlingTime: {report['SettlingTime']}\n" +
             # f"SettlingMin: {report['SettlingMin']}\n" +
@@ -107,8 +108,9 @@ class BasicExperiment:
 
         for i, variation in enumerate(variations):
             mag, phase, omega = variation[2].bode_close()
-            magnitudes.append({"x": omega, "y": mag, "type": "line", "name": f"when {variation[0]}={variation[1]}"})
-            phases.append({"x": omega, "y": phase, "type": "line", "name": f"when {variation[0]}={variation[1]}"})
+            var_val = "%.2f" % (float(variation[1]))
+            magnitudes.append({"x": omega, "y": mag, "type": "line", "name": f"when {variation[0]}={var_val}"})
+            phases.append({"x": omega, "y": phase, "type": "line", "name": f"when {variation[0]}={var_val}"})
 
         return {
                    "data": magnitudes,

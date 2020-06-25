@@ -2,12 +2,13 @@ import dash
 import control as ct
 from dash.dependencies import Input, Output, State
 
-from craft.labo import BasicExperiment, BasicSystem, Variable
-from craft.layout import layout, construct_variable_definer, state_to_variable
-from craft.templates import index_template
+from .labo import BasicExperiment, BasicSystem, Variable
+from .layout import layout, construct_variable_definer
+from .utils import state_to_variable
+from .templates import index_template
 
-P = ct.TransferFunction([1], [1, 1, 1])
-exp = BasicExperiment(BasicSystem(P))
+
+exp = BasicExperiment(BasicSystem(ct.TransferFunction([1], [1, 1, 1])))
 exp.add_variable(Variable("x", kind="range", start=0, end=5, step=1))
 
 external_stylesheets = [
@@ -38,6 +39,8 @@ app.layout = layout
                State("feedback_raw", "value"),
                State("var-x-container", "children")])
 def render_time(clicks, plant_raw, controller_raw, feedback_raw, current_var):
+    s = state_to_variable(current_var)
+    exp.update_var(s.name, s)
     fig = exp.render_step(g=plant_raw, k=controller_raw, h=feedback_raw)
     return fig
 
@@ -50,6 +53,8 @@ def render_time(clicks, plant_raw, controller_raw, feedback_raw, current_var):
                State("feedback_raw", "value"),
                State("var-x-container", "children")])
 def render_freq(clicks, plant_raw, controller_raw, feedback_raw, current_var):
+    s = state_to_variable(current_var)
+    exp.update_var(s.name, s)
     fig = exp.render_bode(g=plant_raw, k=controller_raw, h=feedback_raw)
     return fig
 
@@ -59,8 +64,11 @@ def render_freq(clicks, plant_raw, controller_raw, feedback_raw, current_var):
                Input("var-name", "value")],
               [State("var-x-container", "children")])
 def update_variable_params(kind, name, current_var):
+    final_var = current_var
+
     if name != "":
         var = state_to_variable(current_var)
+        print("var: ", var)
         current_kind = var.kind
 
         current_once = var.fixed or 0.0
@@ -71,17 +79,13 @@ def update_variable_params(kind, name, current_var):
 
         if kind == current_kind:
             if kind == "once":
-                current_var = construct_variable_definer(kind, name, [current_once])
+                final_var = construct_variable_definer(kind, name, [current_once])
             elif kind == "array":
-                current_var = construct_variable_definer(kind, name, current_array)
+                final_var = construct_variable_definer(kind, name, current_array)
             elif kind == "range":
-                current_var = construct_variable_definer(kind, name, [current_start, current_end, current_step])
+                final_var = construct_variable_definer(kind, name, [current_start, current_end, current_step])
         else:
-            current_var = construct_variable_definer(kind, name)
+            final_var = construct_variable_definer(kind, name)
 
-        exp.update_var(name, var)
-    return current_var
+    return final_var
 
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
