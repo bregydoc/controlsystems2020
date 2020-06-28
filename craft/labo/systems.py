@@ -39,8 +39,8 @@ class System:
     def step_report(self, time: list = None) -> Dict[str, float]:
         return ct.step_info(self.full_system(), time)
 
-    def response_to(self, u: list, time: list = None) -> Tuple[np.float, np.float]:
-        t, y = ct.forced_response(self.full_system(), time, u)
+    def response_to(self, u: list, time: list) -> Tuple[list, list]:
+        t, y, _ = ct.forced_response(self.full_system(), T=time, U=u)
         return t, y
 
     def bode_open(self, omega: list = None) -> Tuple[np.float, np.float, np.float]:

@@ -98,14 +98,58 @@ class BasicExperiment:
             }
         }
 
-    def render_bode(self, g: str = None, k: str = None, h: str = None) -> Tuple[Dict, Dict]:
+    def render_time_any(self, t: list, u: list, g: str = None, k: str = None, h: str = None) -> Dict:
+        data: List[Dict] = []
+
+        variations = self.calculate_variations(g, k, h)
+
+        pairs = []
+        for i, variation in enumerate(variations):
+            t, y = variation[2].response_to(u=u, time=t)
+            ind = np.sort(np.where(np.abs(np.diff(y)) == 0))[0][::-1].tolist()
+            useful_zone = [ind[v] for v in range(1, len(ind)) if ind[v] - ind[v-1] <= 2]
+            var_val = "%.2f" % (float(variation[1]))
+            if len(useful_zone) > 0:
+                pairs.append((variation[0], var_val, t[:useful_zone[-1]], y[:useful_zone[-1]]))
+            else:
+                pairs.append((variation[0], var_val, t, y))
+
+        pps = [len(p[2]) for p in pairs]
+        cutoff = max(pps)
+
+        for pair in pairs:
+            var_name, var_val, ti, y = pair
+            # print(len(ti), cutoff)
+            # tf = np.concatenate([ti[:cutoff], np.array([ti[-1]]*(cutoff-len(ti)))])
+            # yf = np.concatenate([y[:cutoff], np.array([y[-1]]*(cutoff-len(y)))])
+            # print(yf, len(yf))
+            data.append({"x": ti, "y": y, "type": "line", "name": f"when {var_name}={var_val}"})
+
+        data.append({"x": t[:cutoff], "y": u[:cutoff], "type": "line", "name": "u(t)", "line": {"color": "#CCCCCC"}})
+
+        return {
+            "data": data,
+            "layout": {
+                "title": "Ramp Response of System",
+                "xaxis": {"title": "Time (s)"},
+                "yaxis": {"title": "Amplitude"}
+            }
+        }
+
+    def render_bode(self, g: str = None, k: str = None, h: str = None, feedback_kind: str = "close") -> Tuple[Dict, Dict]:
         magnitudes: List[Dict] = []
         phases: List[Dict] = []
 
         variations = self.calculate_variations(g, k, h)
 
         for i, variation in enumerate(variations):
-            mag, phase, omega = variation[2].bode_close()
+            mag, phase, omega = [], [], []
+            if "close" in feedback_kind:
+                mag, phase, omega = variation[2].bode_close()
+            elif "open" in feedback_kind:
+                mag, phase, omega = variation[2].bode_open()
+            else:
+                pass
             var_val = "%.2f" % (float(variation[1]))
             magnitudes.append({"x": omega, "y": mag, "type": "line", "name": f"when {variation[0]}={var_val}"})
             phases.append({"x": omega, "y": phase, "type": "line", "name": f"when {variation[0]}={var_val}"})

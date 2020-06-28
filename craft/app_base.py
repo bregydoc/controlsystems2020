@@ -9,7 +9,6 @@ from io import StringIO
 
 from dash.dependencies import Input, Output, State
 
-
 from .labo import BasicExperiment, BasicSystem, Variable, normalized_tf
 from .layout import layout, construct_variable_definer
 from .utils import state_to_variable
@@ -51,30 +50,52 @@ app.layout = layout
 # app.renderer = renderer
 
 @app.callback(Output("time-plot", "figure"),
-              [Input("compute-btn", "n_clicks")],
+              [Input("compute-btn", "n_clicks"),
+               Input("time-graphic-selection", "value")],
               [State("plant_raw", "value"),
                State("controller_raw", "value"),
                State("feedback_raw", "value"),
                State("var-x-container", "children")])
-def render_time(clicks, plant_raw, controller_raw, feedback_raw, current_var):
+def render_time(clicks, plot_type, plant_raw, controller_raw, feedback_raw, current_var):
     s = state_to_variable(current_var)
     exp.update_var(s.name, s)
-    fig = exp.render_step(g=plant_raw, k=controller_raw, h=feedback_raw)
-    return fig
+
+    if plot_type == "step":
+        t = np.linspace(0, 50, 250)
+        u = np.ones_like(t)
+        return exp.render_time_any(t, u, g=plant_raw, k=controller_raw, h=feedback_raw)
+    elif plot_type == "ramp":
+        t = np.linspace(0, 50, 250)
+        u = t
+        return exp.render_time_any(t, u, g=plant_raw, k=controller_raw, h=feedback_raw)
+    elif plot_type == "parabola":
+        t = np.linspace(0, 50, 250)
+        u = np.square(t)
+        return exp.render_time_any(t, u, g=plant_raw, k=controller_raw, h=feedback_raw)
+
+    t = np.linspace(0, 50, 250)
+    u = np.ones_like(t)
+    return exp.render_time_any(t, u, g=plant_raw, k=controller_raw, h=feedback_raw)
 
 
 @app.callback([Output("freq-mag-plot", "figure"),
                Output("freq-phase-plot", "figure")],
-              [Input("compute-btn", "n_clicks")],
+              [Input("compute-btn", "n_clicks"),
+               Input("freq-graphic-selection", "value")],
               [State("plant_raw", "value"),
                State("controller_raw", "value"),
                State("feedback_raw", "value"),
                State("var-x-container", "children")])
-def render_freq(clicks, plant_raw, controller_raw, feedback_raw, current_var):
+def render_freq(clicks, plot_type, plant_raw, controller_raw, feedback_raw, current_var):
     s = state_to_variable(current_var)
     exp.update_var(s.name, s)
-    fig = exp.render_bode(g=plant_raw, k=controller_raw, h=feedback_raw)
-    return fig
+
+    if plot_type == "closed-bode":
+        return exp.render_bode(g=plant_raw, k=controller_raw, h=feedback_raw)
+    elif plot_type == "open-bode":
+        return exp.render_bode(g=plant_raw, k=controller_raw, h=feedback_raw, feedback_kind="open")
+
+    return exp.render_bode(g=plant_raw, k=controller_raw, h=feedback_raw)
 
 
 @app.callback(Output("var-x-container", "children"),

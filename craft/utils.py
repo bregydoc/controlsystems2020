@@ -1,67 +1,6 @@
-import dash_core_components as dcc
-import dash_html_components as html
 from typing import Dict
-from dash.development.base_component import Component
 from .labo import Variable
 import ast
-
-input_class = "px-2 py-1 ml-2 bg-indigo-100 rounded-md"
-
-
-def construct_variable_definer(kind: str, name: str, values: list = None) -> Component:
-    inputs = []
-    if kind == "once":
-        inputs = [
-            dcc.Input(
-                id="var-input-once",
-                className=input_class,  # +" w-1/3",
-                value=str(values[0]) if values is not None and len(values) > 0 else None
-            )
-        ]
-
-    if kind == "array":
-        inputs = [
-            dcc.Input(
-                id="var-input-array",
-                className=input_class,  # +" w-1/3",
-                value=str(values) if values is not None and len(values) > 0 else None
-            )
-        ]
-
-    if kind == "range":
-        inputs = [
-            dcc.Input(
-                id="var-input-start",
-                className=input_class + " w-1/12",
-                value=str(values[0]) if values is not None and len(values) > 2 else None
-            ),
-            dcc.Input(
-                id="var-input-end",
-                className=input_class + " w-1/12",
-                value=str(values[1]) if values is not None and len(values) > 2 else None
-            ),
-            dcc.Input(
-                id="var-input-step",
-                className=input_class + " w-1/12",
-                value=str(values[2]) if values is not None and len(values) > 2 else None
-            )
-        ]
-
-    return html.Div(id="var-mods", className="flex w-full mb-3", children=[
-        dcc.Input(id="var-name", className="px-2 py-1 mr-2 bg-indigo-100 rounded-md w-2/12", value=name),
-        dcc.Dropdown(
-            id='var-kind-select',
-            className="w-32",
-            options=[
-                {'label': 'Once', 'value': 'once'},
-                {'label': 'Array', 'value': 'array'},
-                {'label': 'Range', 'value': 'range'}
-            ],
-            clearable=False,
-            value=kind
-        ),
-        *inputs
-    ])
 
 
 def state_to_variable(current_var: Dict) -> Variable:
