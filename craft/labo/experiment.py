@@ -107,7 +107,7 @@ class BasicExperiment:
         for i, variation in enumerate(variations):
             t, y = variation[2].response_to(u=u, time=t)
             ind = np.sort(np.where(np.abs(np.diff(y)) == 0))[0][::-1].tolist()
-            useful_zone = [ind[v] for v in range(1, len(ind)) if ind[v] - ind[v-1] <= 2]
+            useful_zone = [ind[v] for v in range(1, len(ind)) if (ind[v] - ind[v-1]) <= 1]
             var_val = "%.2f" % (float(variation[1]))
             if len(useful_zone) > 0:
                 pairs.append((variation[0], var_val, t[:useful_zone[-1]], y[:useful_zone[-1]]))

@@ -61,7 +61,7 @@ def render_time(clicks, plot_type, plant_raw, controller_raw, feedback_raw, curr
     exp.update_var(s.name, s)
 
     if plot_type == "step":
-        t = np.linspace(0, 50, 250)
+        t = np.linspace(0, 30, 250)
         u = np.ones_like(t)
         return exp.render_time_any(t, u, g=plant_raw, k=controller_raw, h=feedback_raw)
     elif plot_type == "ramp":
