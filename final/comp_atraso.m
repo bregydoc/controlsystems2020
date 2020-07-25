@@ -6,7 +6,6 @@ G=10/s/(s+5);
 
 kc=10;
 psi=0.7;
-MF=28;
 
 Phi_des=100*psi;
 
