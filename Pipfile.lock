@@ -71,11 +71,11 @@
         },
         "control2020": {
             "hashes": [
-                "sha256:11d7e779b45d14e9b6b452af257049765ebdb2138fcae84b2fc3aa84bce1ac51",
-                "sha256:1c3c857190e4cef5ffb0bfddcf1ed4b3600108afbb6369cf9b54a2f9bf4d3225"
+                "sha256:2b599a6008aba6bd72bdb807a855499b1fdb924675b215cbc0733643adc7c428",
+                "sha256:8b1eed332785c3188ac0592c71ddfe6fc006ebaf93bb9f506a4de26a6888c40d"
             ],
             "index": "pypi",
-            "version": "==0.0.12"
+            "version": "==0.0.13"
         },
         "cycler": {
             "hashes": [
