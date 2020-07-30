@@ -1,5 +1,4 @@
 import control as ct
-import numpy as np
 
 
 def ss_error(g, err_step=None, err_ramp=None, err_para=None):
@@ -13,8 +12,7 @@ def ss_error(g, err_step=None, err_ramp=None, err_para=None):
         ess = ct.evalfr(ct.minreal(s*g), 0j)
         kx = 1 / err_ramp
     elif err_para is not None:
-        ess = ct.evalfr(ct.minreal(g/s), 0j)
+        ess = ct.evalfr(ct.minreal(s**2*g), 0j)
         kx = 1 / err_para
 
     return kx, ess
-
